@@ -1,6 +1,29 @@
+LEN_STEP = 0.65
+M_IN_KM = 1000
+SWIM_LEN = 1.38
+
+
 class InfoMessage:
     """Информационное сообщение о тренировке."""
-    pass
+    def __init__(self,
+                 training_type,
+                 duration,
+                 distance,
+                 speed,
+                 calories) -> None:
+
+        self.training_type = training_type
+        self.duration = duration
+        self.distance = distance
+        self.speed = speed
+        self.calories = calories
+
+    def get_message(self) -> str:
+        return (f"Тип тренировки: {self.training_type};\n"
+                f"Длительность: {self.duration} ч.;\n"
+                f"Дистанция: {self.distance} км;\n"
+                f"Ср. скорость: {self.speed} км/ч;\n"
+                f"Потрачено ккал: {self.calories}\n")
 
 
 class Training:
@@ -11,15 +34,18 @@ class Training:
                  duration: float,
                  weight: float,
                  ) -> None:
-        pass
+
+        self.action: int = action
+        self.duration: float = duration
+        self.weight: float = weight
 
     def get_distance(self) -> float:
         """Получить дистанцию в км."""
-        pass
+        return self.action * LEN_STEP / M_IN_KM
 
     def get_mean_speed(self) -> float:
         """Получить среднюю скорость движения."""
-        pass
+        return self.get_distance() / self.duration
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
@@ -27,21 +53,47 @@ class Training:
 
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
-        pass
+        training_type = __class__.__name__
+        distance = self.get_distance()
+        speed = self.get_mean_speed()
+        calories = self.get_spent_calories()
+        return InfoMessage(training_type,
+                           self.duration,
+                           distance,
+                           speed,
+                           calories).get_message()
 
 
 class Running(Training):
     """Тренировка: бег."""
+    def __init__(self,
+                 action: int,
+                 duration: float,
+                 weight: float
+                 ) -> None:
+        super().__init__(action, duration, weight)
     pass
 
 
 class SportsWalking(Training):
     """Тренировка: спортивная ходьба."""
+    def __init__(self,
+                 action: int,
+                 duration: float,
+                 weight: float
+                 ) -> None:
+        super().__init__(action, duration, weight)
     pass
 
 
 class Swimming(Training):
     """Тренировка: плавание."""
+    def __init__(self,
+                 action: int,
+                 duration: float,
+                 weight: float
+                 ) -> None:
+        super().__init__(action, duration, weight)
     pass
 
 
